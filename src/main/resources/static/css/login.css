@@ -1,0 +1,48 @@
+:root {
+	--log-color: #66ccff;
+}
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+.containerLog {
+	width: 450px;
+	/*height: 50%;*/
+	margin: 50px auto;
+	padding: 20px 30px;
+	background-color: var(--log-color);
+	font-size: 1.4rem;
+	display: flex;
+	flex-direction: column;
+	border: 2px solid blue;
+	border-radius: 20px;
+	box-shadow: 10px 10px 15px rgb(0, 0, 0, 0.5);
+}
+.containerLog input {
+	margin: 15px;
+	margin-left: 25px;
+	font-size: 1.6rem;
+	border: 0;
+	border-bottom: 2px solid #54575b;
+	width: 80%;
+	padding: 3px;
+	background-color: var(--log-color);
+}
+.logButtons {
+	margin: 5px 10px;
+	display: flex;
+	justify-content: space-between;
+}
+button {
+	font-size: 1.6rem;
+        padding: 5px 20px;
+	border-radius: 10px;
+	box-shadow: 5px 5px 5px rgb(0, 0, 0, 0.3); 
+}
+#btnGetProfile {
+    margin: 5px auto;
+}
+#logFullName, #logRepeatPass, #logEmail, #btnCreate, #btnBack, #userLog, #adminLog, #getAll, #myProfile {
+	display: none;
+}

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+            <title>Login Chat</title>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link href="css/login.css" rel="stylesheet" type="text/css"/>
+            <script src="js/myLogin.js" type="module" defer></script>
+	</head>
+	<body>
+            <div class="containerLog" id="anonimLog">
+                    <input type="text" id="logName" placeholder="Name" required size="12">
+                    <input type="text" id="logFullName" placeholder="FullName" required size="12">
+                    <input type="email" id="logEmail" placeholder="@email.com" required size="12">
+                    <input type="password" id="logPass" placeholder="password" required size="12">
+                    <input type="password" id="logRepeatPass" placeholder="repeat password" required size="12">
+                    <div class="logButtons">
+                            <button id="btnLogin">LogIn</button>
+                            <button id="btnBack">Back</button>
+                            <button id="btnCreate">Create</button>
+                            <button id="btnRegistration">Registration</button>
+                    </div>
+            </div>
+            <div class="containerLog" id="userLog">
+                    <h2 id="helloUser">helloUser</h2>
+                    <div class="logButtons">
+                            <button id="btnLogOut">LogOut</button>
+                            <button id="btnLogAdmin">login as Admin</button>
+                    </div>
+                    <div class="logButtons">
+                        <button id="btnGetProfile">myProfile</button>
+                    </div>
+            </div>
+            <div class="containerLog" id="myProfile" style="width:80%"></div>
+            <div class="containerLog" id="adminLog">
+                    <h2>Hello admin</h2>
+                    <input type="password" id="userPass" placeholder="confirm password" required size="12">
+                    <input type="password" id="adminPass" placeholder="strong admin password" required size="12">
+                    <div class="logButtons">
+                            <button id="btnBackToUser">Back</button>
+                            <button id="btnGetAll">Get All</button>
+                            <button id="btnContAdmin">Continue</button>
+                    </div>
+            </div>
+            <div class="containerLog" id="getAll" style="width:80%"></div>
+	</body>
+</html>
