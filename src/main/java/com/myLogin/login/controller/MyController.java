@@ -4,13 +4,17 @@ import com.myLogin.login.model.LoginDto;
 import com.myLogin.login.model.RegisterDto;
 import com.myLogin.login.service.AppUserService;
 import com.myLogin.login.service.TokenService;
+import com.myLogin.login.error.*;
+
 import jakarta.annotation.PostConstruct;
+import jakarta.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,7 +35,21 @@ public class MyController {
     
     @GetMapping("/guest/test")
     public ResponseEntity<Object> test() {
-        return ResponseEntity.ok("This is test!");
+        return ResponseEntity.ok("\nThis is test!");
+    }
+    @GetMapping("/guest/test2")
+    public ResponseEntity<Object> testException() throws ResourceNotFoundException {
+        if(true) {
+            throw new ResourceNotFoundException("\n There are test 2");
+        }
+        return null;
+    }
+    @GetMapping("/guest/test3")
+    public ResponseEntity<Object> testException3() throws Exception {
+        if(true) {
+            throw new Exception("\n There are test 3");
+        }
+        return null;
     }
     @GetMapping("/all")
     public ResponseEntity<Object> showAll() {
@@ -47,20 +65,35 @@ public class MyController {
         return ResponseEntity.ok(response);
     }
     
-    @PostMapping("/guest/register")
-    public ResponseEntity<Object> userRegister(@RequestBody RegisterDto registerDto) {
-        return mapUserDetailsToResponse(appUserService.saveUserToDB(registerDto));
-    }
     @PostMapping("/guest/login")
-    public ResponseEntity<Object> userLogining(@RequestBody LoginDto login) {
+    public ResponseEntity<Object> userLogining(@RequestBody @Valid LoginDto login, BindingResult bindRes)
+            throws AuthorizeException {
+        if(bindRes.hasErrors()) {
+            throw new AuthorizeException(bindRes.getAllErrors().toString());
+        }
         System.out.println("login.name = "+login.getUsername());
         System.out.println("login.pass = "+login.getPass());
-        return mapUserDetailsToResponse(appUserService.loginUserFromDB(login));
-
+        final ResponseEntity<Object> mapUserDetailsToResponseTest = 
+            mapUserDetailsToResponse(appUserService.loginUserFromDB(login), login.getUsername());
+        return mapUserDetailsToResponseTest;
     }
-    private ResponseEntity<Object> mapUserDetailsToResponse(Optional<UserDetails> user) {
-        if(user.isEmpty())
-            return ResponseEntity.badRequest().body(" User not registred in DB ");
+    
+    @PostMapping("/guest/register")
+    public ResponseEntity<Object> userRegistration(@RequestBody @Valid RegisterDto registerDto, BindingResult bindRes)
+            throws RegistrationException, AuthorizeException {
+        if(bindRes.hasErrors()) {
+            throw new RegistrationException(bindRes.getAllErrors().toString());
+        }
+        final ResponseEntity<Object> mapUserDetailsToResponseTest = 
+            mapUserDetailsToResponse(appUserService.saveUserToDB(registerDto), registerDto.getUsername());
+        return mapUserDetailsToResponseTest;
+    }
+    
+    private ResponseEntity<Object> mapUserDetailsToResponse(Optional<UserDetails> user, String name)
+            throws AuthorizeException {
+        if(user.isEmpty()) {
+            throw new AuthorizeException("User "+name+" not found in DB");
+        }
         String token = tokenService.generateTokenFromUserDetail(user.get());
         System.out.println("user = "+user.get().getUsername());
         Map<String, Object> response = new HashMap<>();
@@ -68,9 +101,10 @@ public class MyController {
         response.put("scope", user.get().getAuthorities().toString());
         response.put("token", token);
         return ResponseEntity.ok(response);
-    }    
+    }
+    
     @PostConstruct
     public void controllerTest() {
-        System.out.println("Successful bean-initialize, and testMthod - "+test().getBody().toString());
+        System.out.println("\nSuccessful bean-initialize, and testMthod - "+test().getBody().toString());
     }
 }

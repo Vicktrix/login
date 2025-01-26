@@ -60,7 +60,8 @@ public class SecurityConfig {
 //            .cors(c -> c.disable())                   // set CORS as WebMvcConfigurer
             .cors(myCors)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/resources/**", "/error", "/api/v1/guest/**").permitAll()
+                .requestMatchers("/", "/test","/resources/**", "/error", "/api/v1/guest/**").permitAll()
+//                .requestMatchers("/resources/**", "/error", "/api/v1/guest/**").permitAll()
                 .anyRequest().authenticated())
 //                .anyRequest().permitAll())
             .formLogin(form -> form
