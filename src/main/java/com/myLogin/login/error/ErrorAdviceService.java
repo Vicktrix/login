@@ -16,7 +16,9 @@ public class ErrorAdviceService {
     private ResourceLoader resourceLoader;
     private String SourcePage = "classpath:static/error.html";
     private String page = null, start, end;
-
+    private String splitter = "<div id=\"message\"></div>";
+    private String appender = "<div id=\"message\" style=\"background-color: red\">";
+    
     public ErrorAdviceService(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
     }
@@ -30,7 +32,7 @@ public class ErrorAdviceService {
             System.out.println("\nError(read file - "+SourcePage+") in ErrorAdviceService \n"+ex);
             return;
         }
-        final String[] split = page.split("<div id=\"message\"></div>");
+        final String[] split = page.split(splitter);
         if(split.length != 2) {
             page = null;
             return;
@@ -43,7 +45,7 @@ public class ErrorAdviceService {
         
         return page == null? "INTERNAL_SERVER_ERROR" : new StringBuilder("")
                 .append(start)
-                .append("<div id=\"message\">")
+                .append(appender)
                 .append(message)
                 .append("</div>")
                 .append(end).toString();

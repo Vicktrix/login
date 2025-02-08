@@ -21,7 +21,8 @@ const dom = {
     output : {
         helloUser : document.querySelector('#helloUser'),
         myProfile : document.querySelector('#myProfile'),
-        getAll : document.querySelector('#getAll')
+        getAll : document.querySelector('#getAll'),
+        getError : document.querySelector('#getError')
     }, 
     block : {
         anonimLog : document.querySelector('#anonimLog'),

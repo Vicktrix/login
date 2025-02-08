@@ -26,11 +26,25 @@ const getJSON = res => {
     console.log('Inside get gson');
     return res.json();
 };
-const myError = res => console.log('Somes happens, mistake - '+res);
-const notLogged = res => {
-    dom.input.logName.value = "You are not logged, something went wrong!";
+const myError = res => {
+    let message = res.toString();
+    console.log('Somes happens, mistake - '+res);
+    console.log('Somes happens, mistake - '+message);
+    dom.output.getError.InnerHTML = '<p>'+message+'</p>';
+    dom.output.getError.style.display = 'block';
+    dom.input.logName.value = "YOU ARE NOT LOGGED";
     dom.input.logName.style.color = 'red';
 };
+const clearMyError = () => {
+    dom.output.getError.InnerHTML = '';
+    dom.output.getError.style.display = 'none';
+    dom.input.logName.value = "";
+    dom.input.logName.style.color = 'black';
+};
+//const notLogged = res => {
+//    dom.input.logName.value = "YOU ARE NOT LOGGED";
+//    dom.input.logName.style.color = 'red';
+//};
 const parseMyProfile = data => {
     dom.output.myProfile.innerHTML = 
     `<h3>principal name - ${data.userName}<h3/>
@@ -61,6 +75,7 @@ function funcLogOut() {
         dom.input.logPass.value = "";
         dom.input.logName.value = "";
         dom.output.myProfile.innerHTML = "";
+        clearMyError();
         console.log('you logOuted');    
 }
 // ------------ LOGIN ---------------------
@@ -70,6 +85,7 @@ const loginAcc = () => {
     let dto = {username: dom.input.logName.value, pass: dom.input.logPass.value};
     console.log('dto = ');
     console.log(dto);
+    clearMyError();
     myPost(url, dto, loginView);
 };
 const getProfile = () => {
@@ -84,7 +100,8 @@ const myPost = (url, dto, callback) => {
         body: JSON.stringify(dto)})
     .then(getJSON)
     .then(callback)
-    .catch(notLogged);
+//    .catch(notLogged);
+    .catch(myError);
 };
 const myGet = (url, callback) => {
     fetch(url)
@@ -112,6 +129,7 @@ const funcRegister = () => {
         };
         console.log('We send register dto :');
         console.log(dto);
+        clearMyError();
         myPost('http://localhost:8080/api/v1/guest/register', dto, backAcc);
     };
 };

@@ -43,6 +43,6 @@ button {
 #btnGetProfile {
     margin: 5px auto;
 }
-#logFullName, #logRepeatPass, #logEmail, #btnCreate, #btnBack, #userLog, #adminLog, #getAll, #myProfile {
+#logFullName, #logRepeatPass, #logEmail, #btnCreate, #btnBack, #userLog, #adminLog, #getAll, #myProfile, #getError {
 	display: none;
 }

@@ -34,13 +34,14 @@ public class MyExceptionController {
     @ResponseBody
     public String registrationException(Exception ex) {
         return errorAdviceService.getResponceErrorPageWithMessage(
-            "\nSomething wrong on Server. Exception : "+ex.getMessage());
+            "\n Something wrong on Server. Interrupted by Exception.class. <br>"
+            + "\n Error : "+ex.getMessage());
     }
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseBody
     public String registrationException(ResourceNotFoundException ex) {
         return errorAdviceService.getResponceErrorPageWithMessage(
-            "\nSomething wrong ResourceNotFoundException, You will be redirected to Error page."
+            "\n Something wrong on Server. Interrupted by ResourceNotFoundException.class. <br>"
             + "\n Error : "+ex.getMessage());
     }
 }
