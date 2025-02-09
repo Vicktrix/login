@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -69,7 +70,7 @@ public class MyController {
     public ResponseEntity<Object> userLogining(@RequestBody @Valid LoginDto login, BindingResult bindRes)
             throws AuthorizeException {
         if(bindRes.hasErrors()) {
-            throw new AuthorizeException(bindRes.getAllErrors().toString());
+            throw new AuthorizeException(errorParser(bindRes));
         }
         System.out.println("login.name = "+login.getUsername());
         System.out.println("login.pass = "+login.getPass());
@@ -82,7 +83,7 @@ public class MyController {
     public ResponseEntity<Object> userRegistration(@RequestBody @Valid RegisterDto registerDto, BindingResult bindRes)
             throws RegistrationException, AuthorizeException {
         if(bindRes.hasErrors()) {
-            throw new RegistrationException(bindRes.getAllErrors().toString());
+            throw new RegistrationException(errorParser(bindRes));
         }
         final ResponseEntity<Object> mapUserDetailsToResponseTest = 
             mapUserDetailsToResponse(appUserService.saveUserToDB(registerDto), registerDto.getUsername());
@@ -101,6 +102,11 @@ public class MyController {
         response.put("scope", user.get().getAuthorities().toString());
         response.put("token", token);
         return ResponseEntity.ok(response);
+    }
+    
+    private String errorParser(BindingResult error) {
+        return error.getFieldErrors().stream()
+            .map(e -> e.getDefaultMessage()).collect(Collectors.joining(", "));
     }
     
     @PostConstruct
