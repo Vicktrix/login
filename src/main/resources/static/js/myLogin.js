@@ -22,32 +22,28 @@ const backAcc = () => {
 const getToken = () => localStorage.getItem("token");
 const setToken = tk => localStorage.setItem("token",tk);
 const getJSON = res => {
-    if(!res.ok) { throw new Error("We can`t fetch the resource");}
-    console.log('Inside get gson');
+    if(!res.ok) { 
+        return res.text().then(text => { 
+            throw new Error(`Error from server : ${text}`);});
+    }
+        console.log('Inside get gson');
     return res.json();
 };
 const myError = res => {
-    let message = res.toString();
-    console.log('Somes happens, mistake - '+res);
-    console.log('Somes happens, mistake - '+message);
-    dom.output.getError.InnerHTML = '<p>'+message+'</p>';
     dom.output.getError.style.display = 'block';
-    dom.input.logName.value = "YOU ARE NOT LOGGED";
+    dom.output.getError.innerHTML = `<p> ${res.message} </p>`;
+    dom.input.logName.value = "Error!";
     dom.input.logName.style.color = 'red';
 };
 const clearMyError = () => {
-    dom.output.getError.InnerHTML = '';
+    dom.output.getError.innerHTML = '';
     dom.output.getError.style.display = 'none';
     dom.input.logName.value = "";
     dom.input.logName.style.color = 'black';
 };
-//const notLogged = res => {
-//    dom.input.logName.value = "YOU ARE NOT LOGGED";
-//    dom.input.logName.style.color = 'red';
-//};
 const parseMyProfile = data => {
     dom.output.myProfile.innerHTML = 
-    `<h3>principal name - ${data.userName}<h3/>
+    `<h3>principal name - ${data.userName}</h3>
     id = ${data.AppUser.id}<br>
     name from DB : ${data.AppUser.username}<br>
     mail :${data.AppUser.email}<br>

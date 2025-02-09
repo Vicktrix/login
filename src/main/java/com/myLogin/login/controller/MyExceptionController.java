@@ -22,7 +22,7 @@ public class MyExceptionController {
     @ResponseBody
     public ResponseEntity<Object> authorizeException(AuthorizeException auth) {
         System.out.println("\nauth = "+auth.getMessage());
-        return new ResponseEntity(auth.getMessage(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(auth.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler(RegistrationException.class)
     @ResponseBody
